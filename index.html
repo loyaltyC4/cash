@@ -446,12 +446,37 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   text-align: left;
   transform: perspective(900px) rotateX(10deg) rotateY(0deg);
   transform-origin: center bottom;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.38s cubic-bezier(0.16,1,0.3,1);
+}
+/* State-aware prompt card glow — matches active tab color */
+.hero-3d-stage[data-state="detect"]  .hero-prompt-card {
+  box-shadow:
+    0 20px 40px -8px rgba(0,0,0,0.35),
+    0 8px 16px -4px rgba(0,0,0,0.18),
+    0 0 0 1px rgba(255,255,255,0.15),
+    0 0 0 2px rgba(74,213,232,0.18),
+    0 0 32px rgba(74,213,232,0.10);
+}
+.hero-3d-stage[data-state="remove"]  .hero-prompt-card {
+  box-shadow:
+    0 20px 40px -8px rgba(0,0,0,0.35),
+    0 8px 16px -4px rgba(0,0,0,0.18),
+    0 0 0 1px rgba(255,255,255,0.15),
+    0 0 0 2px rgba(214,48,49,0.18),
+    0 0 32px rgba(214,48,49,0.10);
+}
+.hero-3d-stage[data-state="monitor"] .hero-prompt-card {
+  box-shadow:
+    0 20px 40px -8px rgba(0,0,0,0.35),
+    0 8px 16px -4px rgba(0,0,0,0.18),
+    0 0 0 1px rgba(255,255,255,0.15),
+    0 0 0 2px rgba(46,204,113,0.18),
+    0 0 32px rgba(46,204,113,0.10);
 }
 /* State-dependent 3D lean — pivots as you switch tabs */
-.hero-3d-stage[data-state="detect"]  .hero-prompt-card { transform: perspective(900px) rotateX(9deg) rotateY(-10deg); }
-.hero-3d-stage[data-state="remove"]  .hero-prompt-card { transform: perspective(900px) rotateX(8deg)  rotateY(0deg);   }
-.hero-3d-stage[data-state="monitor"] .hero-prompt-card { transform: perspective(900px) rotateX(9deg)  rotateY(10deg);  }
+.hero-3d-stage[data-state="detect"]  .hero-prompt-card { transform: perspective(900px) rotateX(10deg) rotateY(-12deg); }
+.hero-3d-stage[data-state="remove"]  .hero-prompt-card { transform: perspective(900px) rotateX(8deg)  rotateY(-2deg);  }
+.hero-3d-stage[data-state="monitor"] .hero-prompt-card { transform: perspective(900px) rotateX(10deg) rotateY(12deg);  }
 .hero-prompt-card:hover {
   transform: perspective(900px) rotateX(6deg) translateY(-3px);
   box-shadow:
@@ -466,6 +491,9 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   padding: 0 4px;
   font-weight: 500;
   line-height: 1.4;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  will-change: opacity, transform;
+  min-height: 1.4em;
 }
 .hero-prompt-username { color: #2C91AF; font-weight: 600; }
 .hero-prompt-footer {
@@ -576,80 +604,104 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .hero-tabs {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin: 16px auto 24px;
-  padding: 4px;
-  background: rgba(253,253,250,0.92);
-  border-radius: 14px;
+  gap: 8px;
+  margin: 20px auto 4px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
   width: fit-content;
-  border: 1px solid rgba(26,18,34,0.09);
-  box-shadow: 0 2px 12px rgba(26,18,34,0.08), 0 1px 3px rgba(26,18,34,0.06);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 .hero-tab {
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 8px 16px;
-  font-size: 13px;
+  padding: 10px 20px;
+  font-size: 13.5px;
   font-weight: 600;
-  color: rgba(26,18,34,0.45);
-  border-radius: 10px;
+  color: rgba(255,255,255,0.45);
+  border-radius: 100px;
   cursor: pointer;
-  transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-  background: transparent;
-  border: none;
+  transition:
+    color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.22s ease,
+    border-color 0.22s ease;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.10);
   font-family: inherit;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  will-change: box-shadow, transform;
+}
+.hero-tab svg {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 .hero-tab:hover {
-  color: rgba(26,18,34,0.75);
-  background: rgba(26,18,34,0.05);
+  color: rgba(255,255,255,0.80);
+  background: rgba(255,255,255,0.11);
+  transform: translateY(-1px);
+}
+.hero-tab.active svg {
+  transform: scale(1.1);
 }
 
-/* Dot indicator */
-.hero-tab::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.35;
-  flex-shrink: 0;
-  transition: opacity 0.18s ease, transform 0.18s ease;
-}
-.hero-tab.active::before {
-  opacity: 1;
-  transform: scale(1.15);
-}
-
-/* Active: per-state subtle accent on white — dark enough to read */
+/* ── Detect — cyan glow ── */
 .hero-tab[data-state="detect"].active {
-  background: rgba(74,213,232,0.12);
-  color: #0e8898;
-  box-shadow: 0 0 0 1px rgba(74,213,232,0.30) inset;
+  background: rgba(74,213,232,0.16);
+  color: #7ee8f5;
+  border-color: rgba(74,213,232,0.38);
+  box-shadow:
+    0 0 0 1px rgba(74,213,232,0.20),
+    0 4px 20px rgba(74,213,232,0.32),
+    0 10px 44px rgba(74,213,232,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.14);
+  transform: translateY(-1px);
 }
 .hero-tab[data-state="detect"]:hover:not(.active) {
-  color: rgba(26,18,34,0.75);
-}
-.hero-tab[data-state="remove"].active {
-  background: rgba(214,48,49,0.10);
-  color: #c0302f;
-  box-shadow: 0 0 0 1px rgba(214,48,49,0.22) inset;
-}
-.hero-tab[data-state="remove"]:hover:not(.active) {
-  color: rgba(26,18,34,0.75);
-}
-.hero-tab[data-state="monitor"].active {
-  background: rgba(46,204,113,0.11);
-  color: #1a9e56;
-  box-shadow: 0 0 0 1px rgba(46,204,113,0.25) inset;
-}
-.hero-tab[data-state="monitor"]:hover:not(.active) {
-  color: rgba(26,18,34,0.75);
+  color: rgba(74,213,232,0.72);
+  background: rgba(74,213,232,0.09);
+  border-color: rgba(74,213,232,0.20);
 }
 
-/* Cards container — Passionfroot-style tight cluster */
+/* ── Remove — crimson glow ── */
+.hero-tab[data-state="remove"].active {
+  background: rgba(214,48,49,0.16);
+  color: #f88080;
+  border-color: rgba(214,48,49,0.38);
+  box-shadow:
+    0 0 0 1px rgba(214,48,49,0.20),
+    0 4px 20px rgba(214,48,49,0.32),
+    0 10px 44px rgba(214,48,49,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.10);
+  transform: translateY(-1px);
+}
+.hero-tab[data-state="remove"]:hover:not(.active) {
+  color: rgba(248,128,128,0.72);
+  background: rgba(214,48,49,0.09);
+  border-color: rgba(214,48,49,0.20);
+}
+
+/* ── Monitor — green glow ── */
+.hero-tab[data-state="monitor"].active {
+  background: rgba(46,204,113,0.16);
+  color: #5eebb8;
+  border-color: rgba(46,204,113,0.38);
+  box-shadow:
+    0 0 0 1px rgba(46,204,113,0.20),
+    0 4px 20px rgba(46,204,113,0.32),
+    0 10px 44px rgba(46,204,113,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.10);
+  transform: translateY(-1px);
+}
+.hero-tab[data-state="monitor"]:hover:not(.active) {
+  color: rgba(94,235,184,0.72);
+  background: rgba(46,204,113,0.09);
+  border-color: rgba(46,204,113,0.20);
+}
+
 .hero-graph-wrap {
   position: relative;
   width: 100%;
@@ -668,14 +720,13 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   inset: 0;
   opacity: 0;
   pointer-events: none;
-  /* Start: below (near search bar), small, blurred — like cards sitting in the search bar */
-  transform: translateY(64px) scale(0.88);
-  filter: blur(6px);
+  transform: translateY(48px) scale(0.90);
+  filter: blur(5px);
   transform-origin: center bottom;
   transition:
-    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.48s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.32s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform, filter;
 }
 .hgc-state.active {
@@ -687,12 +738,12 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .hgc-state.leaving {
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-12px) scale(0.96);
+  transform: translateY(-10px) scale(0.97);
   filter: blur(2px);
   transition:
-    opacity 0.2s ease,
-    transform 0.22s ease,
-    filter 0.2s ease;
+    opacity 0.16s ease,
+    transform 0.18s ease,
+    filter 0.16s ease;
 }
 
 /* Card shell — static, no per-card transition during tab switch */
@@ -719,16 +770,29 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 
 /* Three positions — Passionfroot-style subtle angles, tight cluster */
 .hgc-left   {
-  left: 8%; top: 32px; width: 195px; z-index: 1;
-  transform: rotate(-4deg);
+  left: 4%; top: 22px; width: 200px; z-index: 1;
+  transform: rotate(-6deg) translateY(4px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 .hgc-center {
-  left: 50%; top: 0px; width: 240px; z-index: 3;
+  left: 50%; top: 0px; width: 248px; z-index: 3;
   transform: translateX(-50%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 .hgc-right  {
-  right: 8%; top: 32px; width: 195px; z-index: 1;
-  transform: rotate(4deg);
+  right: 4%; top: 22px; width: 200px; z-index: 1;
+  transform: rotate(6deg) translateY(4px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.hgc-card:hover {
+  transform: translateY(-4px) rotate(0deg) scale(1.02) !important;
+  box-shadow:
+    0 1px 1px -0.5px rgba(26,18,34,0.05),
+    0 6px 16px -3px rgba(26,18,34,0.12),
+    0 20px 48px -8px rgba(26,18,34,0.16),
+    inset 0 0 0 0.75px rgba(26,18,34,0.10),
+    inset 0 1px 0 0 rgba(255,255,255,0.95);
+  z-index: 10 !important;
 }
 
 
@@ -829,10 +893,10 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   pointer-events: none;
   overflow: visible;
 }
-/* Per-state tilt variants — subtle Passionfroot-style pivot */
-.hero-3d-stage[data-state="detect"]  { transform: rotateX(4deg) rotateY(-6deg); }
-.hero-3d-stage[data-state="remove"]  { transform: rotateX(3deg) rotateY(-3deg); }
-.hero-3d-stage[data-state="monitor"] { transform: rotateX(2deg) rotateY(0deg);  }
+/* Per-state tilt variants — Passionfroot-style pivot */
+.hero-3d-stage[data-state="detect"]  { transform: rotateX(5deg) rotateY(-8deg); }
+.hero-3d-stage[data-state="remove"]  { transform: rotateX(4deg) rotateY(-2deg); }
+.hero-3d-stage[data-state="monitor"] { transform: rotateX(3deg) rotateY(5deg);  }
 /* Re-enable pointer events on interactive children inside the stage */
 .hero-3d-stage .hgc-card,
 .hero-3d-stage .hero-prompt-card,
@@ -2145,8 +2209,8 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
     <h1>Detect. Remove.<br><em>Protect your work.</em></h1>
     <p class="hero-sub">Striqit automatically scans 10,000+ websites, submits DMCA takedowns, and monitors for re-uploads — so you get paid, not pirated.</p>
     <div class="hero-3d-scene">
-      <div class="hero-3d-stage" id="heroStage">
-        <div style="position:relative; height:220px;">
+      <div class="hero-3d-stage" id="heroStage" data-state="detect">
+        <div style="position:relative; height:230px;">
           <div id="heroCards" style="position:absolute; inset:0; overflow:visible;">
 
         <!-- ═══ STATE: DETECT ═══ -->
@@ -2401,7 +2465,7 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
     <!-- Prompt input card -->
     <div class="hero-prompt-wrap">
       <div class="hero-prompt-card">
-        <div class="hero-prompt-text">
+        <div class="hero-prompt-text" id="heroPromptText">
           Scan and destroy all stolen content for <span class="hero-prompt-username">@yourcreatorhandle</span>?
         </div>
         <div class="hero-prompt-footer">
@@ -2419,9 +2483,18 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 
     <!-- Interactive 3-state tab bar (below search bar) -->
     <div class="hero-tabs" id="heroTabs">
-      <button class="hero-tab active" data-state="detect">Detect</button>
-      <button class="hero-tab" data-state="remove">Remove</button>
-      <button class="hero-tab" data-state="monitor">Monitor</button>
+      <button class="hero-tab active" data-state="detect">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.8"/><path d="M11 11L14 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="7" cy="7" r="2" fill="currentColor" opacity="0.55"/></svg>
+        Detect
+      </button>
+      <button class="hero-tab" data-state="remove">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M6 2.5h4M6 5v8a1 1 0 001 1h2a1 1 0 001-1V5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Remove
+      </button>
+      <button class="hero-tab" data-state="monitor">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M1.5 10l3.5-4 3 3 3-6 3.5 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="14.5" cy="7" r="1.5" fill="currentColor" opacity="0.6"/></svg>
+        Monitor
+      </button>
     </div>
 
     <!-- Action pills -->
@@ -3314,16 +3387,43 @@ document.querySelectorAll('.hero-toggle').forEach(btn => {
     tabs.forEach(t => t.classList.toggle('active', t.dataset.state === stateName));
 
     // Shift the 3D stage tilt per state
-    const stage = document.getElementById('hero3dStage');
+    const stage = document.getElementById('heroStage');
     if (stage) stage.dataset.state = stateName;
 
     current = stateName;
     setTimeout(() => { switching = false; }, 250);
   }
 
+  // Prompt text + pill per state
+  const promptTexts = {
+    detect:  { html: 'Scan and destroy all stolen content for <span class="hero-prompt-username">@yourcreatorhandle</span>?', pill: '@ Target' },
+    remove:  { html: 'Submit DMCA takedowns and remove all flagged content now?', pill: '⚡ Remove' },
+    monitor: { html: 'Set up 24/7 real-time monitoring for <span class="hero-prompt-username">@yourcreatorhandle</span>?', pill: '📡 Monitor' },
+  };
+  function updatePromptUI(stateName) {
+    const promptEl = document.getElementById('heroPromptText');
+    const pillEl   = document.querySelector('.hero-prompt-pill');
+    if (!promptEl || !promptTexts[stateName]) return;
+    promptEl.style.opacity   = '0';
+    promptEl.style.transform = 'translateY(5px)';
+    setTimeout(() => {
+      promptEl.innerHTML = promptTexts[stateName].html;
+      if (pillEl) pillEl.textContent = promptTexts[stateName].pill;
+      requestAnimationFrame(() => {
+        promptEl.style.opacity   = '1';
+        promptEl.style.transform = 'translateY(0)';
+      });
+    }, 130);
+  }
+
+  function handleTabActivate(stateName) {
+    setActiveState(stateName);
+    updatePromptUI(stateName);
+  }
+
   tabs.forEach(tab => {
-    tab.addEventListener('mouseenter', () => setActiveState(tab.dataset.state));
-    tab.addEventListener('click',      () => setActiveState(tab.dataset.state));
+    tab.addEventListener('mouseenter', () => handleTabActivate(tab.dataset.state));
+    tab.addEventListener('click',      () => handleTabActivate(tab.dataset.state));
   });
 })();
 
