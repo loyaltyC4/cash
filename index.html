@@ -430,30 +430,30 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 /* ── Prompt input card ── */
 .hero-prompt-wrap {
   position: relative;
-  margin: 0px auto 16px;
-  max-width: 520px;
+  margin: 4px auto 20px;
+  max-width: 540px;
   z-index: 2;
 }
 .hero-prompt-card {
   background: #fdfdfa;
-  border-radius: 24px;
-  padding: 20px 20px 16px;
+  border-radius: 20px;
+  padding: 18px 20px 14px;
   box-shadow:
-    0 16px 32px -6px rgba(0,0,0,0.45),
-    0 6px 12px -2px rgba(0,0,0,0.2),
-    0 0 0 1px rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.18);
+    0 20px 40px -8px rgba(0,0,0,0.35),
+    0 8px 16px -4px rgba(0,0,0,0.18),
+    0 0 0 1px rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.12);
   text-align: left;
-  transform: perspective(800px) rotateX(2deg) rotateY(-1deg);
+  transform: perspective(900px) rotateX(10deg);
   transform-origin: center bottom;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
 }
 .hero-prompt-card:hover {
-  transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(-4px);
+  transform: perspective(900px) rotateX(6deg) translateY(-3px);
   box-shadow:
-    0 24px 48px -8px rgba(0,0,0,0.5),
-    0 8px 16px -4px rgba(0,0,0,0.25),
-    0 0 0 1px rgba(255,255,255,0.15);
+    0 28px 56px -10px rgba(0,0,0,0.4),
+    0 10px 20px -5px rgba(0,0,0,0.2),
+    0 0 0 1px rgba(255,255,255,0.18);
 }
 .hero-prompt-text {
   font-size: 16px;
@@ -645,13 +645,13 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   color: rgba(26,18,34,0.75);
 }
 
-/* Cards container — tighter gap above search bar */
+/* Cards container — Passionfroot-style tight cluster */
 .hero-graph-wrap {
   position: relative;
   width: 100%;
-  max-width: 860px;
-  margin: 12px auto -12px;
-  height: 260px;
+  max-width: 720px;
+  margin: 8px auto -8px;
+  height: 240px;
   z-index: 5;
   pointer-events: none;
 }
@@ -713,18 +713,18 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 }
 .hgc-inner { position:relative; z-index:2; padding:16px 18px 14px; }
 
-/* Three positions — tight, clean arrangement above search bar */
+/* Three positions — Passionfroot-style subtle angles, tight cluster */
 .hgc-left   {
-  left: 24px; top: 28px; width: 205px; z-index: 1;
-  transform: rotate(-6deg);
+  left: 8%; top: 32px; width: 195px; z-index: 1;
+  transform: rotate(-4deg);
 }
 .hgc-center {
-  left: 50%; top: 0px; width: 252px; z-index: 3;
+  left: 50%; top: 0px; width: 240px; z-index: 3;
   transform: translateX(-50%);
 }
 .hgc-right  {
-  right: 24px; top: 28px; width: 205px; z-index: 1;
-  transform: rotate(6deg);
+  right: 8%; top: 32px; width: 195px; z-index: 1;
+  transform: rotate(4deg);
 }
 
 
@@ -811,24 +811,24 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 
 /* ══ 3D SCENE — cards + search bar tilt as one unified unit ══ */
 .hero-3d-scene {
-  perspective: 900px;
-  perspective-origin: 50% 20%;
+  perspective: 1200px;
+  perspective-origin: 50% 35%;
   position: relative;
   pointer-events: none;
   overflow: visible;
 }
 .hero-3d-stage {
   transform-origin: 50% 50%;
-  transform: rotateX(16deg) rotateY(-20deg);
+  transform: rotateX(4deg) rotateY(-6deg);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
   pointer-events: none;
   overflow: visible;
 }
-/* Per-state tilt variants — the stage pivots subtly on Y as you switch */
-.hero-3d-stage[data-state="detect"]  { transform: rotateX(16deg) rotateY(-20deg); }
-.hero-3d-stage[data-state="remove"]  { transform: rotateX(15deg) rotateY(-12deg); }
-.hero-3d-stage[data-state="monitor"] { transform: rotateX(14deg) rotateY(-4deg);  }
+/* Per-state tilt variants — subtle Passionfroot-style pivot */
+.hero-3d-stage[data-state="detect"]  { transform: rotateX(4deg) rotateY(-6deg); }
+.hero-3d-stage[data-state="remove"]  { transform: rotateX(3deg) rotateY(-3deg); }
+.hero-3d-stage[data-state="monitor"] { transform: rotateX(2deg) rotateY(0deg);  }
 /* Re-enable pointer events on interactive children inside the stage */
 .hero-3d-stage .hgc-card,
 .hero-3d-stage .hero-prompt-card,
