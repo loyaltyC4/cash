@@ -439,10 +439,21 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   border-radius: 24px;
   padding: 20px 20px 16px;
   box-shadow:
-    0 12px 24px -4px rgba(0,0,0,0.4),
-    0 0 0 1px rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.15);
+    0 16px 32px -6px rgba(0,0,0,0.45),
+    0 6px 12px -2px rgba(0,0,0,0.2),
+    0 0 0 1px rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
   text-align: left;
+  transform: perspective(800px) rotateX(2deg) rotateY(-1deg);
+  transform-origin: center bottom;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+.hero-prompt-card:hover {
+  transform: perspective(800px) rotateX(0deg) rotateY(0deg) translateY(-4px);
+  box-shadow:
+    0 24px 48px -8px rgba(0,0,0,0.5),
+    0 8px 16px -4px rgba(0,0,0,0.25),
+    0 0 0 1px rgba(255,255,255,0.15);
 }
 .hero-prompt-text {
   font-size: 16px;
@@ -496,20 +507,26 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .hero-pills {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 60px;
+  margin-bottom: 48px;
+  padding: 16px 24px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
 }
 .hero-pill {
-  padding: 10px 22px;
-  border-radius: 9999px;
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.75);
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.15);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
   backdrop-filter: blur(8px);
-  transition: all 0.2s;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
 }
 .hero-pill:hover:not(.active) {
@@ -632,11 +649,12 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .hero-graph-wrap {
   position: relative;
   width: 100%;
-  max-width: 940px;
-  margin: 24px auto 6px;
-  height: 300px;
+  max-width: 980px;
+  margin: 16px auto -8px;
+  height: 320px;
   z-index: 5;
   pointer-events: none;
+  perspective: 1200px;
 }
 .hero-graph-wrap .hgc-card { pointer-events: auto; }
 .hero-graph-cards { position: absolute; inset: 0; }
@@ -696,10 +714,22 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 }
 .hgc-inner { position:relative; z-index:2; padding:16px 18px 14px; }
 
-/* Three positions — spread wide so each card is fully readable */
-.hgc-left   { left:-1%;  top:30%; width:236px; z-index:1; transform: rotate(-12deg); }
-.hgc-center { left:50%;  top:4%;  width:268px; z-index:3; transform: translateX(-50%); }
-.hgc-right  { right:-1%; top:28%; width:236px; z-index:1; transform: rotate(8deg); }
+/* Three positions — Passionfroot-style 3D spread with depth */
+.hgc-left   {
+  left: 2%; top: 28%; width: 240px; z-index: 1;
+  transform: rotate(-10deg) rotateY(8deg) translateZ(-20px);
+  transform-style: preserve-3d;
+}
+.hgc-center {
+  left: 50%; top: 2%; width: 280px; z-index: 3;
+  transform: translateX(-50%) translateZ(30px);
+  transform-style: preserve-3d;
+}
+.hgc-right  {
+  right: 2%; top: 26%; width: 240px; z-index: 1;
+  transform: rotate(10deg) rotateY(-8deg) translateZ(-20px);
+  transform-style: preserve-3d;
+}
 
 
 /* Typography */
@@ -1182,10 +1212,26 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
    PLATFORMS (Mobbin-style floating logos)
    ============================================ */
 .mob-platforms {
-  padding: 80px 0 100px;
-  background: #faf9f7;
+  padding: 100px 0 120px;
+  background:
+    linear-gradient(180deg, rgba(250,249,247,0.95) 0%, rgba(250,249,247,0.85) 100%),
+    url("https://hyperagent.com/api/files/usergenerated/threads/cmollbtr41e0j08ad9ncu6lw4/images/e46c5c64-7a20-4707-8e8d-7128b00ddfc3.png");
+  background-size: cover, cover;
+  background-position: center, center;
   overflow: hidden;
   text-align: center;
+  position: relative;
+}
+.mob-platforms::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(250,249,247,1) 0%,
+    rgba(250,249,247,0.6) 30%,
+    rgba(250,249,247,0.6) 70%,
+    rgba(250,249,247,1) 100%);
+  pointer-events: none;
 }
 .mob-platforms-inner {
   max-width: 1200px;
@@ -1241,37 +1287,119 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .mob-website-box {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  margin-top: 20px;
-  background: #f5f4f2;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 9999px;
-  padding: 6px 14px 6px 10px;
-  font-size: 12px;
-  color: #555;
+  gap: 10px;
+  margin-top: 28px;
+  background: #ffffff;
+  border: 2px solid rgba(25,9,34,0.12);
+  border-radius: 16px;
+  padding: 12px 20px 12px 16px;
+  font-size: 14px;
+  color: #333;
   font-family: var(--font-body);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  box-shadow:
+    0 4px 16px rgba(25,9,34,0.08),
+    0 1px 3px rgba(25,9,34,0.04);
+  transform: perspective(600px) rotateX(2deg);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  pointer-events: auto;
+}
+.mob-website-box:hover {
+  transform: perspective(600px) rotateX(0deg) translateY(-3px);
+  box-shadow:
+    0 8px 24px rgba(25,9,34,0.12),
+    0 2px 6px rgba(25,9,34,0.06);
+  border-color: var(--orange);
 }
 .mob-website-box svg {
-  width: 13px; height: 13px;
-  color: #888;
+  width: 20px; height: 20px;
+  color: var(--orange);
   flex-shrink: 0;
 }
 .mob-website-url {
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #190922;
   letter-spacing: -0.01em;
+  font-size: 15px;
 }
 .mob-website-tag {
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--orange);
-  background: rgba(212,43,43,0.08);
-  border-radius: 9999px;
-  padding: 2px 7px;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: var(--orange);
+  border-radius: 8px;
+  padding: 5px 12px;
+  box-shadow: 0 2px 8px rgba(235,105,40,0.3);
 }
+/* Coverage section search bar - smaller tilted version */
+.mob-search-wrap {
+  margin-top: 32px;
+  margin-bottom: 20px;
+  pointer-events: auto;
+}
+.mob-search-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 2px solid rgba(25,9,34,0.1);
+  border-radius: 16px;
+  padding: 10px 12px 10px 16px;
+  box-shadow:
+    0 6px 20px rgba(25,9,34,0.08),
+    0 2px 6px rgba(25,9,34,0.04);
+  transform: perspective(600px) rotateX(3deg);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 440px;
+}
+.mob-search-bar:hover,
+.mob-search-bar:focus-within {
+  transform: perspective(600px) rotateX(0deg) translateY(-3px);
+  box-shadow:
+    0 12px 32px rgba(25,9,34,0.12),
+    0 4px 8px rgba(25,9,34,0.06);
+  border-color: var(--orange);
+}
+.mob-search-icon {
+  width: 20px;
+  height: 20px;
+  color: rgba(25,9,34,0.35);
+  flex-shrink: 0;
+}
+.mob-search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: #190922;
+  width: 220px;
+}
+.mob-search-input::placeholder {
+  color: rgba(25,9,34,0.4);
+}
+.mob-search-btn {
+  background: var(--orange);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(235,105,40,0.3);
+  white-space: nowrap;
+}
+.mob-search-btn:hover {
+  background: var(--orange-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(235,105,40,0.4);
+}
+
 /* Bobbin-style: multi-axis organic drift */
 @keyframes mob-appear {
   from { opacity: 0; transform: scale(0.72); }
@@ -1290,19 +1418,28 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   position: absolute;
   width: var(--sz, 64px);
   height: var(--sz, 64px);
-  border-radius: calc(var(--sz, 64px) * 0.26);
+  border-radius: calc(var(--sz, 64px) * 0.22);
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.11), 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow:
+    0 4px 16px rgba(25,9,34,0.08),
+    0 1px 3px rgba(25,9,34,0.04),
+    inset 0 0 0 1px rgba(255,255,255,0.5);
   opacity: 0;
   animation:
-    mob-appear 0.45s cubic-bezier(0.16,1,0.3,1) var(--del, 0s) forwards,
-    mob-drift  var(--dur, 5.5s) ease-in-out calc(var(--del, 0s) + 0.45s) infinite;
+    mob-appear 0.55s cubic-bezier(0.16,1,0.3,1) var(--del, 0s) forwards,
+    mob-drift  var(--dur, 5.5s) ease-in-out calc(var(--del, 0s) + 0.55s) infinite;
   will-change: transform, opacity;
-  transition: box-shadow 0.25s;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: saturate(0.85);
 }
 .mob-icon:hover {
-  box-shadow: 0 10px 28px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.09);
+  box-shadow:
+    0 12px 32px rgba(25,9,34,0.15),
+    0 4px 8px rgba(25,9,34,0.08),
+    inset 0 0 0 1px rgba(255,255,255,0.6);
   z-index: 20;
+  transform: scale(1.08);
+  filter: saturate(1.1);
 }
 .mob-icon img { width: 55%; height: 55%; object-fit: contain; }
 .mob-icon-bg {
@@ -1891,6 +2028,28 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .reveal.delay-2 { transition-delay: 0.2s; }
 .reveal.delay-3 { transition-delay: 0.3s; }
 .reveal.delay-4 { transition-delay: 0.4s; }
+
+/* Section entry transitions */
+.mob-platforms {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mob-platforms.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.striker-scatter {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+.striker-scatter.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 </style>
 </head>
 <body>
@@ -2484,6 +2643,15 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
           <span class="mob-stat-unit">platforms monitored</span>
         </div>
       </div>
+      <!-- Search bar - smaller tilted version -->
+      <div class="mob-search-wrap">
+        <div class="mob-search-bar">
+          <svg class="mob-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="mob-search-input" placeholder="Enter your domain to start scanning...">
+          <button class="mob-search-btn">Start Scan</button>
+        </div>
+      </div>
+
       <!-- Website monitor pill -->
       <div class="mob-website-box">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 4-2.5 14 0 18M3 12h18M4.2 7.5h15.6M4.2 16.5h15.6"/></svg>
@@ -2578,7 +2746,7 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 <!-- ============================================
      SCATTERED STRIKERS
      ============================================ -->
-<section class="striker-scatter">
+<section class="striker-scatter" style="background: linear-gradient(180deg, var(--surface-50) 0%, rgba(248,246,238,0.95) 50%, var(--surface-50) 100%), url('https://hyperagent.com/api/files/usergenerated/threads/cmollbtr41e0j08ad9ncu6lw4/images/5ca24cc6-f565-4c7e-97a3-aa35543e2c04.png'); background-size: cover, cover; background-position: center, center;">
   <div class="section-inner">
     <div class="reveal">
       <div class="section-eyebrow">The team</div>
@@ -3105,6 +3273,20 @@ const io = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 reveals.forEach(el => io.observe(el));
+
+// Section visibility animations
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.mob-platforms, .striker-scatter').forEach(section => {
+  sectionObserver.observe(section);
+});
+
 </script>
 </body>
 </html>
