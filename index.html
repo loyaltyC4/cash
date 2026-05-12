@@ -430,8 +430,8 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 /* ── Prompt input card ── */
 .hero-prompt-wrap {
   position: relative;
-  margin: 8px auto 20px;
-  max-width: 540px;
+  margin: 0px auto 16px;
+  max-width: 520px;
   z-index: 2;
 }
 .hero-prompt-card {
@@ -649,12 +649,11 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .hero-graph-wrap {
   position: relative;
   width: 100%;
-  max-width: 980px;
-  margin: 16px auto -8px;
-  height: 320px;
+  max-width: 860px;
+  margin: 12px auto -12px;
+  height: 260px;
   z-index: 5;
   pointer-events: none;
-  perspective: 1200px;
 }
 .hero-graph-wrap .hgc-card { pointer-events: auto; }
 .hero-graph-cards { position: absolute; inset: 0; }
@@ -714,21 +713,18 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 }
 .hgc-inner { position:relative; z-index:2; padding:16px 18px 14px; }
 
-/* Three positions — Passionfroot-style 3D spread with depth */
+/* Three positions — tight, clean arrangement above search bar */
 .hgc-left   {
-  left: 2%; top: 28%; width: 240px; z-index: 1;
-  transform: rotate(-10deg) rotateY(8deg) translateZ(-20px);
-  transform-style: preserve-3d;
+  left: 24px; top: 28px; width: 205px; z-index: 1;
+  transform: rotate(-6deg);
 }
 .hgc-center {
-  left: 50%; top: 2%; width: 280px; z-index: 3;
-  transform: translateX(-50%) translateZ(30px);
-  transform-style: preserve-3d;
+  left: 50%; top: 0px; width: 252px; z-index: 3;
+  transform: translateX(-50%);
 }
 .hgc-right  {
-  right: 2%; top: 26%; width: 240px; z-index: 1;
-  transform: rotate(10deg) rotateY(-8deg) translateZ(-20px);
-  transform-style: preserve-3d;
+  right: 24px; top: 28px; width: 205px; z-index: 1;
+  transform: rotate(6deg);
 }
 
 
@@ -823,16 +819,16 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 }
 .hero-3d-stage {
   transform-origin: 50% 50%;
-  transform: rotateX(14deg) rotateY(-18deg);
+  transform: rotateX(10deg) rotateY(-14deg);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
   pointer-events: none;
   overflow: visible;
 }
 /* Per-state tilt variants — the stage pivots subtly on Y as you switch */
-.hero-3d-stage[data-state="detect"]  { transform: rotateX(14deg) rotateY(-18deg); }
-.hero-3d-stage[data-state="remove"]  { transform: rotateX(13deg) rotateY(-10deg); }
-.hero-3d-stage[data-state="monitor"] { transform: rotateX(12deg) rotateY(-2deg);  }
+.hero-3d-stage[data-state="detect"]  { transform: rotateX(10deg) rotateY(-14deg); }
+.hero-3d-stage[data-state="remove"]  { transform: rotateX(9deg)  rotateY(-7deg);  }
+.hero-3d-stage[data-state="monitor"] { transform: rotateX(8deg)  rotateY(0deg);   }
 /* Re-enable pointer events on interactive children inside the stage */
 .hero-3d-stage .hgc-card,
 .hero-3d-stage .hero-prompt-card,
@@ -908,8 +904,8 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 }
 .hero-mascot {
   position: absolute;
-  bottom: -2%;
-  right: 2%;
+  bottom: 4%;
+  right: 1%;
   z-index: 9;
   animation: idle-float 3.5s ease-in-out infinite;
 }
@@ -2093,7 +2089,7 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
     <p class="hero-sub">Striqit automatically scans 10,000+ websites, submits DMCA takedowns, and monitors for re-uploads — so you get paid, not pirated.</p>
     <div class="hero-3d-scene">
       <div class="hero-3d-stage" id="heroStage">
-        <div style="position:relative; height:340px;">
+        <div style="position:relative; height:220px;">
           <div id="heroCards" style="position:absolute; inset:0; overflow:visible;">
 
         <!-- ═══ STATE: DETECT ═══ -->
