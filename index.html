@@ -1839,18 +1839,15 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
    ============================================ */
 .cta-final {
   padding: 120px 24px 100px;
-  background:
-    linear-gradient(to bottom,
-      rgba(8,4,18,0.62) 0%,
-      rgba(8,4,18,0.68) 100%),
-    url('footer-bg.jpg') center 40% / cover no-repeat;
+  background: var(--ink-900);
   color: #fff;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
-/* orbs removed — image replaces them */
-.cta-orbs { display: none; }
+.cta-orbs { position: absolute; inset: 0; opacity: 0.4; }
+.cta-orbs .orb-a { position: absolute; top: -10%; left: 30%; width: 360px; height: 360px; border-radius: 50%; background: var(--orb-purple); filter: blur(140px); }
+.cta-orbs .orb-b { position: absolute; bottom: -10%; right: 30%; width: 320px; height: 320px; border-radius: 50%; background: var(--orange); filter: blur(140px); }
 
 .cta-inner {
   position: relative;
@@ -1947,15 +1944,21 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .footer {
   background:
     linear-gradient(to bottom,
-      rgba(8,4,18,0.72) 0%,
-      rgba(8,4,18,0.88) 60%,
-      rgba(8,4,18,0.96) 100%),
-    url('footer-bg.jpg') center 70% / cover no-repeat;
-  padding: 60px 24px 30px;
+      rgba(5,2,14,0.95) 0%,
+      rgba(5,2,14,0.88) 40%,
+      rgba(5,2,14,0.30) 72%,
+      rgba(5,2,14,0.05) 100%),
+    url('footer-bg.jpg') center bottom / cover no-repeat;
+  padding: 60px 24px 0;
   border-top: 1px solid rgba(255,255,255,0.08);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   color: rgba(255,255,255,0.85);
+  /* enough height so Striker sits fully below the text */
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 .footer-grain {
   position: absolute;
@@ -1968,9 +1971,12 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 }
 .footer-inner {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   position: relative;
   z-index: 2;
+  /* space below footer grid for the Striker character to sit */
+  padding-bottom: 220px;
 }
 .footer-grid {
   display: grid;
