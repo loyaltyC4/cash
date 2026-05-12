@@ -811,24 +811,25 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 
 /* ══ 3D SCENE — cards + search bar tilt as one unified unit ══ */
 .hero-3d-scene {
-  perspective: 1200px;
-  perspective-origin: 50% 35%;
+  perspective: 900px;
+  perspective-origin: 50% 20%;
   position: relative;
   pointer-events: none;
   overflow: visible;
 }
 .hero-3d-stage {
   transform-origin: 50% 50%;
-  transform: rotateX(10deg) rotateY(-14deg);
+  transform: rotateX(16deg) rotateY(-20deg);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform;
   pointer-events: none;
   overflow: visible;
+  transform-style: preserve-3d;
 }
 /* Per-state tilt variants — the stage pivots subtly on Y as you switch */
-.hero-3d-stage[data-state="detect"]  { transform: rotateX(10deg) rotateY(-14deg); }
-.hero-3d-stage[data-state="remove"]  { transform: rotateX(9deg)  rotateY(-7deg);  }
-.hero-3d-stage[data-state="monitor"] { transform: rotateX(8deg)  rotateY(0deg);   }
+.hero-3d-stage[data-state="detect"]  { transform: rotateX(16deg) rotateY(-20deg); }
+.hero-3d-stage[data-state="remove"]  { transform: rotateX(15deg) rotateY(-12deg); }
+.hero-3d-stage[data-state="monitor"] { transform: rotateX(14deg) rotateY(-4deg);  }
 /* Re-enable pointer events on interactive children inside the stage */
 .hero-3d-stage .hgc-card,
 .hero-3d-stage .hero-prompt-card,
@@ -2046,6 +2047,40 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ── Mobbin-style staggered scroll reveal (coverage section) ── */
+.mob-reveal-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.mob-reveal-line {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.mob-reveal-line.mob-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mob-reveal-line-1 { transition-delay: 0s;    }
+.mob-reveal-line-2 { transition-delay: 0.15s; }
+.mob-reveal-line-3 { transition-delay: 0.28s; }
+.mob-reveal-line-4 { transition-delay: 0.42s; }
+
+/* Give each line proper spacing */
+.mob-reveal-line-1 { margin-bottom: 20px; }
+.mob-reveal-line-2 { margin-bottom: 4px;  }
+.mob-reveal-line-3 { margin-bottom: 28px; }
+.mob-reveal-line-4 { margin-bottom: 0;    }
+
 </style>
 </head>
 <body>
@@ -2181,32 +2216,86 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
         <!-- ═══ STATE: REMOVE ═══ -->
         <div class="hgc-state" data-state="remove">
 
-          <!-- Chip 1: Flagged for Review — top-left -->
-          <div class="hgc-chip" style="top:7%;left:4%;transform:rotate(-5deg);width:152px;z-index:3;">
-            <div class="hgc-chip-label">Flagged for Review</div>
-            <div class="hgc-chip-value">1,240</div>
-            <div class="hgc-chip-sub">across 14 platforms</div>
+          <!-- LEFT: Flagged for Review -->
+          <div class="hgc-card hgc-left" style="width:205px;">
+            <div class="hgc-orb" style="background:#EE5968;top:-40%;left:-28%;width:88%;height:88%;filter:blur(46px);opacity:0.34;"></div>
+            <div class="hgc-grain"></div>
+            <div class="hgc-inner">
+              <div class="hgc-lbl">Flagged for Review</div>
+              <div class="hgc-numrow">
+                <span class="hgc-big">1,240</span>
+              </div>
+              <div class="hgc-tiny" style="margin-bottom:8px;">across 14 platforms</div>
+              <div class="hgc-hr"></div>
+              <div class="hgc-pflist">
+                <div class="hgc-pfrow">
+                  <div class="hgc-pficon" style="background:#FF0000;"></div>
+                  <span style="font-size:10px;font-weight:600;flex:1;">YouTube</span>
+                  <span style="font-size:10px;font-weight:700;color:#c0302f;">534</span>
+                </div>
+                <div class="hgc-pfrow">
+                  <div class="hgc-pficon" style="background:#2AABEE;"></div>
+                  <span style="font-size:10px;font-weight:600;flex:1;">Telegram</span>
+                  <span style="font-size:10px;font-weight:700;color:#c0302f;">348</span>
+                </div>
+                <div class="hgc-pfrow">
+                  <div class="hgc-pficon" style="background:#FF4500;"></div>
+                  <span style="font-size:10px;font-weight:600;flex:1;">Reddit</span>
+                  <span style="font-size:10px;font-weight:700;color:#c0302f;">221</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Chip 2: DMCA Filed — bottom-left -->
-          <div class="hgc-chip" style="top:55%;left:18%;transform:rotate(3deg);width:148px;z-index:2;">
-            <div class="hgc-chip-label">DMCA Filed</div>
-            <div class="hgc-chip-value" style="color:#c0302f;">892</div>
-            <div class="hgc-chip-badge" style="background:rgba(214,48,49,0.10);color:#c0302f;">automated</div>
+          <!-- CENTER: DMCA Filed big stat -->
+          <div class="hgc-card hgc-center" style="width:252px;">
+            <div class="hgc-orb" style="background:#D42B2B;top:-35%;left:-22%;width:90%;height:90%;filter:blur(50px);opacity:0.32;"></div>
+            <div class="hgc-orb" style="background:#FF9147;right:-18%;bottom:-20%;width:65%;height:65%;filter:blur(48px);opacity:0.28;"></div>
+            <div class="hgc-grain"></div>
+            <div class="hgc-inner">
+              <div class="hgc-lbl">DMCA Filed This Week</div>
+              <div class="hgc-numrow">
+                <span class="hgc-big" style="color:#c0302f;">892</span>
+                <span class="hgc-delta" style="background:rgba(214,48,49,0.10);color:#c0302f;">automated</span>
+              </div>
+              <svg viewBox="0 0 196 46" width="100%" height="46" style="display:block;margin-bottom:7px;">
+                <rect x="0"   y="36" width="10" height="10" rx="2.5" fill="rgba(212,43,43,0.18)"/>
+                <rect x="14"  y="28" width="10" height="18" rx="2.5" fill="rgba(212,43,43,0.26)"/>
+                <rect x="28"  y="22" width="10" height="24" rx="2.5" fill="rgba(212,43,43,0.32)"/>
+                <rect x="42"  y="14" width="10" height="32" rx="2.5" fill="rgba(212,43,43,0.40)"/>
+                <rect x="56"  y="18" width="10" height="28" rx="2.5" fill="rgba(212,43,43,0.36)"/>
+                <rect x="70"  y="8"  width="10" height="38" rx="2.5" fill="#D42B2B"/>
+                <rect x="84"  y="12" width="10" height="34" rx="2.5" fill="rgba(212,43,43,0.52)"/>
+                <rect x="98"  y="20" width="10" height="26" rx="2.5" fill="rgba(212,43,43,0.38)"/>
+                <rect x="112" y="10" width="10" height="36" rx="2.5" fill="rgba(212,43,43,0.58)"/>
+                <rect x="126" y="4"  width="10" height="42" rx="2.5" fill="#B81E1E"/>
+                <rect x="140" y="8"  width="10" height="38" rx="2.5" fill="rgba(212,43,43,0.62)"/>
+                <rect x="154" y="6"  width="10" height="40" rx="2.5" fill="rgba(212,43,43,0.70)"/>
+                <rect x="168" y="2"  width="10" height="44" rx="2.5" fill="#C0302F"/>
+                <rect x="182" y="0"  width="10" height="46" rx="2.5" fill="#9B1C1C"/>
+              </svg>
+              <div class="hgc-foot">341 confirmed removed this week</div>
+            </div>
           </div>
 
-          <!-- Chip 3: Confirmed Removed — top-right -->
-          <div class="hgc-chip" style="top:5%;right:15%;transform:rotate(-3deg);width:156px;z-index:3;">
-            <div class="hgc-chip-label">Confirmed Removed</div>
-            <div class="hgc-chip-value" style="color:#1a9e56;">341</div>
-            <div class="hgc-chip-badge" style="background:rgba(46,204,113,0.12);color:#1a9e56;">&#10003;&thinsp;confirmed</div>
-          </div>
-
-          <!-- Chip 4: Avg Removal Time — bottom-right -->
-          <div class="hgc-chip" style="top:53%;right:4%;transform:rotate(6deg);width:142px;z-index:2;">
-            <div class="hgc-chip-label">Avg Removal Time</div>
-            <div class="hgc-chip-value">4.2<span style="font-size:13px;font-weight:700;letter-spacing:0;"> hrs</span></div>
-            <div class="hgc-chip-badge" style="background:rgba(46,204,113,0.12);color:#1a9e56;">&#8593;&thinsp;faster</div>
+          <!-- RIGHT: Confirmed Removed + Avg Time -->
+          <div class="hgc-card hgc-right" style="width:205px;">
+            <div class="hgc-orb" style="background:#2ECC71;top:-35%;left:-22%;width:88%;height:88%;filter:blur(48px);opacity:0.38;"></div>
+            <div class="hgc-grain"></div>
+            <div class="hgc-inner">
+              <div class="hgc-lbl">Confirmed Removed</div>
+              <div class="hgc-numrow">
+                <span class="hgc-big" style="color:#1a9e56;">341</span>
+                <span class="hgc-delta hgc-up">&#10003;</span>
+              </div>
+              <div class="hgc-hr"></div>
+              <div class="hgc-lbl" style="margin-top:8px;">Avg Removal Time</div>
+              <div class="hgc-numrow" style="margin-bottom:4px;">
+                <span class="hgc-big" style="font-size:20px;">4.2<span style="font-size:12px;font-weight:700;"> hrs</span></span>
+                <span class="hgc-delta hgc-up">&#8593;&thinsp;faster</span>
+              </div>
+              <div class="hgc-foot">vs 9.1 hrs industry avg</div>
+            </div>
           </div>
 
         </div>
@@ -2257,52 +2346,31 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
             </div>
           </div>
 
-          <!-- RIGHT: By Platform bar chart -->
-          <div class="hgc-card hgc-right">
+          <!-- RIGHT: By Platform + Threats Blocked -->
+          <div class="hgc-card hgc-right" style="width:205px;">
             <div class="hgc-orb" style="background:#27AE60;top:-35%;left:-22%;width:88%;height:88%;filter:blur(48px);opacity:0.38;"></div>
             <div class="hgc-grain"></div>
             <div class="hgc-inner">
               <div class="hgc-lbl">By Platform</div>
-              <svg viewBox="0 0 200 80" width="100%" height="66" style="display:block;margin-top:4px;">
-                <rect x="10"  y="17" width="36" height="43" rx="4" fill="#2ECC71" opacity="0.9"/>
-                <rect x="58"  y="33" width="36" height="27" rx="4" fill="rgba(46,204,113,0.72)"/>
-                <rect x="106" y="43" width="36" height="17" rx="4" fill="rgba(46,204,113,0.52)"/>
-                <rect x="154" y="49" width="36" height="11" rx="4" fill="rgba(46,204,113,0.36)"/>
-                <text x="28"  y="74" text-anchor="middle" font-size="8" font-family="inherit" fill="rgba(26,18,34,0.38)">YouTube</text>
-                <text x="76"  y="74" text-anchor="middle" font-size="8" font-family="inherit" fill="rgba(26,18,34,0.38)">Telegram</text>
-                <text x="124" y="74" text-anchor="middle" font-size="8" font-family="inherit" fill="rgba(26,18,34,0.38)">Reddit</text>
-                <text x="172" y="74" text-anchor="middle" font-size="8" font-family="inherit" fill="rgba(26,18,34,0.38)">Twitter</text>
+              <svg viewBox="0 0 200 70" width="100%" height="58" style="display:block;margin-top:4px;">
+                <rect x="10"  y="10" width="36" height="43" rx="4" fill="#2ECC71" opacity="0.9"/>
+                <rect x="58"  y="26" width="36" height="27" rx="4" fill="rgba(46,204,113,0.72)"/>
+                <rect x="106" y="36" width="36" height="17" rx="4" fill="rgba(46,204,113,0.52)"/>
+                <rect x="154" y="42" width="36" height="11" rx="4" fill="rgba(46,204,113,0.36)"/>
+                <text x="28"  y="66" text-anchor="middle" font-size="7.5" font-family="inherit" fill="rgba(26,18,34,0.38)">YouTube</text>
+                <text x="76"  y="66" text-anchor="middle" font-size="7.5" font-family="inherit" fill="rgba(26,18,34,0.38)">Telegram</text>
+                <text x="124" y="66" text-anchor="middle" font-size="7.5" font-family="inherit" fill="rgba(26,18,34,0.38)">Reddit</text>
+                <text x="172" y="66" text-anchor="middle" font-size="7.5" font-family="inherit" fill="rgba(26,18,34,0.38)">Twitter</text>
               </svg>
               <div class="hgc-hr" style="margin-top:0;"></div>
-              <div class="hgc-foot">892 removals this month</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+                <div class="hgc-foot">892 removals / month</div>
+                <span class="hgc-delta hgc-up" style="font-size:9px;">100% blocked</span>
+              </div>
             </div>
           </div>
 
-          <div class="hgc-card" style="width:190px;">
-            <div class="hgc-orb" style="background:#27AE60;top:-35%;left:-22%;width:88%;height:88%;filter:blur(46px);opacity:0.33;"></div>
-            <div class="hgc-grain"></div>
-            <div class="hgc-inner">
-              <div class="hgc-lbl">Threats Blocked</div>
-              <div class="hgc-drow">
-                <div class="hgc-dwrap">
-                  <svg viewBox="0 0 64 64" width="64" height="64">
-                    <circle cx="32" cy="32" r="27" fill="none" stroke="rgba(0,0,0,0.07)" stroke-width="7.5"/>
-                    <circle cx="32" cy="32" r="27" fill="none" stroke="#2ECC71" stroke-width="7.5"
-                      stroke-dasharray="169.6" stroke-dashoffset="0"
-                      stroke-linecap="round" transform="rotate(-90 32 32)"/>
-                  </svg>
-                  <div class="hgc-dctr"><span class="hgc-dpct" style="color:#27AE60;">100%</span></div>
-                </div>
-                <div class="hgc-daside">
-                  <div class="hgc-big">8,412</div>
-                  <div class="hgc-tiny">threats neutralized</div>
-                  <div class="hgc-delta hgc-up" style="margin-left:0;margin-top:4px;">this month</div>
-                </div>
-              </div>
-              <div class="hgc-hr"></div>
-              <div class="hgc-foot">Zero successful breaches</div>
-            </div>
-          </div>
+
         </div>
 
       </div>
@@ -2626,33 +2694,42 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
       </div>
     </div>
 
-    <!-- Center stats -->
+    <!-- Center stats — Mobbin-style staggered scroll reveal -->
     <div class="mob-center-stats">
-      <span class="mob-ev-tagline">Every platform. Every corner.</span>
-      <div class="mob-stat-stack">
-        <div class="mob-stat-block">
-          <span class="mob-stat-big">10,000+</span>
-          <span class="mob-stat-unit">websites covered</span>
-        </div>
-        <div class="mob-stat-block">
-          <span class="mob-stat-big">200+</span>
-          <span class="mob-stat-unit">platforms monitored</span>
-        </div>
-      </div>
-      <!-- Search bar - smaller tilted version -->
-      <div class="mob-search-wrap">
-        <div class="mob-search-bar">
-          <svg class="mob-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input type="text" class="mob-search-input" placeholder="Enter your domain to start scanning...">
-          <button class="mob-search-btn">Start Scan</button>
-        </div>
-      </div>
+      <div class="mob-reveal-stack" id="mobRevealStack">
 
-      <!-- Website monitor pill -->
-      <div class="mob-website-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 4-2.5 14 0 18M3 12h18M4.2 7.5h15.6M4.2 16.5h15.6"/></svg>
-        <span class="mob-website-url">yourwebsite.com</span>
-        <span class="mob-website-tag">+ Monitor</span>
+        <!-- Line 1: tagline — always visible first -->
+        <div class="mob-reveal-line mob-reveal-line-1">
+          <span class="mob-ev-tagline">Every platform. Every corner.</span>
+        </div>
+
+        <!-- Line 2: 10,000+ stat -->
+        <div class="mob-reveal-line mob-reveal-line-2">
+          <div class="mob-stat-block">
+            <span class="mob-stat-big">10,000+</span>
+            <span class="mob-stat-unit">websites covered</span>
+          </div>
+        </div>
+
+        <!-- Line 3: 200+ stat -->
+        <div class="mob-reveal-line mob-reveal-line-3">
+          <div class="mob-stat-block">
+            <span class="mob-stat-big">200+</span>
+            <span class="mob-stat-unit">platforms monitored</span>
+          </div>
+        </div>
+
+        <!-- Line 4: scan button -->
+        <div class="mob-reveal-line mob-reveal-line-4">
+          <div class="mob-search-wrap">
+            <div class="mob-search-bar">
+              <svg class="mob-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <input type="text" class="mob-search-input" placeholder="Enter your domain to start scanning...">
+              <button class="mob-search-btn">Start Scan</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -3282,6 +3359,29 @@ const sectionObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.mob-platforms, .striker-scatter').forEach(section => {
   sectionObserver.observe(section);
 });
+
+
+// Mobbin-style staggered reveal for coverage section
+(function() {
+  function triggerReveal() {
+    const stack = document.getElementById('mobRevealStack');
+    if (!stack) return;
+    const lines = stack.querySelectorAll('.mob-reveal-line');
+    const stackRect = stack.getBoundingClientRect();
+    const windowH = window.innerHeight;
+
+    if (stackRect.top < windowH * 0.85) {
+      lines.forEach(function(line, i) {
+        setTimeout(function() {
+          line.classList.add('mob-in');
+        }, i * 140);
+      });
+    }
+  }
+  window.addEventListener('scroll', triggerReveal, { passive: true });
+  // Also trigger on load in case already visible
+  setTimeout(triggerReveal, 200);
+})();
 
 </script>
 </body>
