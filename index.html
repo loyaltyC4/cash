@@ -1839,13 +1839,14 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
    ============================================ */
 .cta-final {
   padding: 120px 24px 100px;
-  background: var(--ink-900);
-  color: #fff;
+  background: var(--surface-300); /* matches FAQ section */
+  color: var(--ink-900);
   text-align: center;
   position: relative;
   overflow: hidden;
 }
-.cta-orbs { position: absolute; inset: 0; opacity: 0.4; }
+/* Orbs softened for light background — subtle colour wash */
+.cta-orbs { position: absolute; inset: 0; opacity: 0.18; }
 .cta-orbs .orb-a { position: absolute; top: -10%; left: 30%; width: 360px; height: 360px; border-radius: 50%; background: var(--orb-purple); filter: blur(140px); }
 .cta-orbs .orb-b { position: absolute; bottom: -10%; right: 30%; width: 320px; height: 320px; border-radius: 50%; background: var(--orange); filter: blur(140px); }
 
@@ -1882,7 +1883,7 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   line-height: 1.05;
   letter-spacing: -0.025em;
   margin-bottom: 16px;
-  color: #fff;
+  color: var(--ink-900);
 }
 .cta-title em {
   font-style: italic;
@@ -1894,9 +1895,8 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 }
 .cta-sub {
   font-size: 1.1rem;
-  color: rgba(255,255,255,0.82);
+  color: var(--ink-600);
   margin-bottom: 32px;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
 }
 .cta-buttons {
   display: flex;
@@ -1923,9 +1923,8 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   box-shadow: 0 8px 24px rgba(212, 43, 43, 0.5);
 }
 .btn-secondary {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(8px);
-  color: #fff;
+  background: rgba(0,0,0,0.05);
+  color: var(--ink-900);
   padding: 14px 28px;
   border-radius: var(--radius-full);
   font-weight: 700;
@@ -1933,10 +1932,10 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(255,255,255,0.18);
+  border: 1px solid var(--ink-300);
   transition: all 0.15s;
 }
-.btn-secondary:hover { background: rgba(255,255,255,0.15); }
+.btn-secondary:hover { background: rgba(0,0,0,0.09); }
 
 /* ============================================
    FOOTER
