@@ -444,10 +444,14 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
     0 0 0 1px rgba(255,255,255,0.15);
   border: 1px solid rgba(255,255,255,0.12);
   text-align: left;
-  transform: perspective(900px) rotateX(10deg);
+  transform: perspective(900px) rotateX(10deg) rotateY(0deg);
   transform-origin: center bottom;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
 }
+/* State-dependent 3D lean — pivots as you switch tabs */
+.hero-3d-stage[data-state="detect"]  .hero-prompt-card { transform: perspective(900px) rotateX(9deg) rotateY(-10deg); }
+.hero-3d-stage[data-state="remove"]  .hero-prompt-card { transform: perspective(900px) rotateX(8deg)  rotateY(0deg);   }
+.hero-3d-stage[data-state="monitor"] .hero-prompt-card { transform: perspective(900px) rotateX(9deg)  rotateY(10deg);  }
 .hero-prompt-card:hover {
   transform: perspective(900px) rotateX(6deg) translateY(-3px);
   box-shadow:
@@ -572,7 +576,7 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .hero-tabs {
   display: flex;
   justify-content: center;
-  gap: 4px;
+  gap: 10px;
   margin: 16px auto 24px;
   padding: 4px;
   background: rgba(253,253,250,0.92);
