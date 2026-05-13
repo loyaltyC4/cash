@@ -1274,8 +1274,14 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 /* ============================================
    PLATFORMS (Mobbin-style floating logos)
    ============================================ */
+.coverage-track {
+  position: relative;
+  height: 280vh;
+}
 .mob-platforms {
-  padding: 100px 0 120px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
   background:
     linear-gradient(180deg, rgba(250,249,247,0.95) 0%, rgba(250,249,247,0.85) 100%),
     url("https://hyperagent.com/api/files/usergenerated/threads/cmollbtr41e0j08ad9ncu6lw4/images/e46c5c64-7a20-4707-8e8d-7128b00ddfc3.png");
@@ -1283,7 +1289,9 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   background-position: center, center;
   overflow: hidden;
   text-align: center;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .mob-platforms::before {
   content: '';
@@ -1303,11 +1311,11 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 }
 .mob-platforms-stage {
   position: relative;
-  height: 640px;
+  height: 100vh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 48px;
 }
 .mob-center-stats {
   position: relative;
@@ -2112,16 +2120,7 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 .reveal.delay-4 { transition-delay: 0.4s; }
 
 /* Section entry transitions */
-.mob-platforms {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.mob-platforms.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* .mob-platforms is scroll-pinned — no section fade-in needed */
 .striker-scatter {
   opacity: 0;
   transform: translateY(40px);
@@ -2133,7 +2132,7 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
   transform: translateY(0);
 }
 
-/* ── Mobbin-style staggered scroll reveal (coverage section) ── */
+/* ── Coverage section: scroll-driven reveal (JS controls each line) ── */
 .mob-reveal-stack {
   display: flex;
   flex-direction: column;
@@ -2142,29 +2141,15 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 }
 
 .mob-reveal-line {
-  opacity: 0;
-  transform: translateY(36px);
-  transition:
-    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
-.mob-reveal-line.mob-in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.mob-reveal-line-1 { transition-delay: 0s;    }
-.mob-reveal-line-2 { transition-delay: 0.15s; }
-.mob-reveal-line-3 { transition-delay: 0.28s; }
-.mob-reveal-line-4 { transition-delay: 0.42s; }
-
-/* Give each line proper spacing */
-.mob-reveal-line-1 { margin-bottom: 20px; }
-.mob-reveal-line-2 { margin-bottom: 4px;  }
-.mob-reveal-line-3 { margin-bottom: 28px; }
-.mob-reveal-line-4 { margin-bottom: 0;    }
+/* Line 1 (tagline) — visible on arrival */
+.mob-reveal-line-1 { opacity: 1; transform: none; margin-bottom: 20px; }
+/* Lines 2–4 — hidden initially, JS scroll reveals them */
+.mob-reveal-line-2 { opacity: 0; transform: translateY(60px); margin-bottom: 4px;  }
+.mob-reveal-line-3 { opacity: 0; transform: translateY(60px); margin-bottom: 28px; }
+.mob-reveal-line-4 { opacity: 0; transform: translateY(60px); margin-bottom: 0;    }
 
 </style>
 </head>
@@ -2657,6 +2642,7 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 <!-- ============================================
      PLATFORMS (Mobbin-style floating logos)
      ============================================ -->
+<div class="coverage-track">
 <section class="mob-platforms" id="coverage">
   <div class="mob-platforms-stage">
 
@@ -2836,6 +2822,7 @@ button { font: inherit; color: inherit; background: none; cursor: pointer; }
 
   </div>
 </section>
+</div><!-- /.coverage-track -->
 <!-- ============================================
      6-CARD FEATURE GRID
      ============================================ -->
@@ -3489,26 +3476,42 @@ document.querySelectorAll('.mob-platforms, .striker-scatter').forEach(section =>
 });
 
 
-// Mobbin-style staggered reveal for coverage section
+// Coverage section: scroll-pinned Mobbin-style animation
 (function() {
-  function triggerReveal() {
-    const stack = document.getElementById('mobRevealStack');
-    if (!stack) return;
-    const lines = stack.querySelectorAll('.mob-reveal-line');
-    const stackRect = stack.getBoundingClientRect();
-    const windowH = window.innerHeight;
+  var track = document.querySelector('.coverage-track');
+  var line2 = document.querySelector('.mob-reveal-line-2');
+  var line3 = document.querySelector('.mob-reveal-line-3');
+  var line4 = document.querySelector('.mob-reveal-line-4');
+  if (!track || !line2) return;
 
-    if (stackRect.top < windowH * 0.85) {
-      lines.forEach(function(line, i) {
-        setTimeout(function() {
-          line.classList.add('mob-in');
-        }, i * 140);
-      });
-    }
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function updateCoverage() {
+    var trackRect = track.getBoundingClientRect();
+    var scrollableH = track.offsetHeight - window.innerHeight;
+    if (scrollableH <= 0) return;
+    var scrolled = -trackRect.top;
+    var progress = Math.max(0, Math.min(1, scrolled / scrollableH));
+
+    // Line 2 (10,000+ websites): rises in during progress 0 → 0.38
+    var p2 = easeOutCubic(Math.max(0, Math.min(1, progress / 0.38)));
+    line2.style.opacity = p2;
+    line2.style.transform = 'translateY(' + ((1 - p2) * 70) + 'px)';
+
+    // Line 3 (200+ platforms): rises in during progress 0.32 → 0.62
+    var p3 = easeOutCubic(Math.max(0, Math.min(1, (progress - 0.32) / 0.3)));
+    line3.style.opacity = p3;
+    line3.style.transform = 'translateY(' + ((1 - p3) * 70) + 'px)';
+
+    // Line 4 (scan input): floats up during progress 0.58 → 0.88
+    var p4 = easeOutCubic(Math.max(0, Math.min(1, (progress - 0.58) / 0.3)));
+    line4.style.opacity = p4;
+    line4.style.transform = 'translateY(' + ((1 - p4) * 70) + 'px)';
   }
-  window.addEventListener('scroll', triggerReveal, { passive: true });
-  // Also trigger on load in case already visible
-  setTimeout(triggerReveal, 200);
+
+  window.addEventListener('scroll', updateCoverage, { passive: true });
+  window.addEventListener('resize', updateCoverage, { passive: true });
+  updateCoverage();
 })();
 
 </script>
